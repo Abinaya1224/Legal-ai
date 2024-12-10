@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+
+<body>
+    <div id="loading-screen" >
+        <h2>Processing... Please wait</h2>
+    </div>
+
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+        <h1>Upload File & Enter Input</h1>
+
+        <label for="file">Choose a file (PDF or Image):</label>
+        <input type="file" name="file" id="file" required>
+
+        <label for="user_input">Enter additional input:</label>
+        <input type="text" name="user_input" id="user_input">
+
+        <button type="submit">Submit</button>
+
+        {% if response_text %}
+        <h2>Response from Model:</h2>
+        <p>{{ response_text }}</p>
+
+        <h3>Download Reports:</h3>
+        <ul>
+            {% for report_path in report_paths %}
+                <li><a href="{{ url_for('download_file', filename=report_path) }}">{{ report_path }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </form>
+
+    <script>
+        // Show the loading screen on form submission
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loading-screen').style.display = 'block';
+        });
+    </script>
+</body>
+
+
+</html>
